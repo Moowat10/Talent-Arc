@@ -1,0 +1,10 @@
+SELECT * FROM invoices 
+INNER JOIN serviceproviding ON invoices.id=serviceproviding.invoiceId
+INNER JOIN services ON services.id=serviceproviding.serviceId
+INNER JOIN Employees ON Employees.id=serviceproviding.empId
+INNER JOIN Roles ON Roles.id=Employees.roleId
+
+INNER JOIN SoldProducts ON invoices.id=SoldProducts.invoiceId
+INNER JOIN Products ON Products.id=SoldProducts.productId
+INNER JOIN Employees ON Employees.id=SoldProducts.empId
+INNER JOIN Roles ON Roles.id=Employees.roleId;

@@ -1,0 +1,31 @@
+{
+  "name": "adv-gqlv2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Scott Moss <willscottmoss@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node -r esm src/index.js",
+    "init": "node -r esm scripts/Initialization.Script.js",
+    "dev": "nodemon src/index.js --ignore 'src/db/db.json'",
+    "test": "jest tests"
+  },
+  "devDependencies": {
+    "apollo-server-testing": "^2.9.6",
+    "jest": "^24.9.0",
+    "mdx-deck": "^3.0.13",
+    "nodemon": "^1.19.4"
+  },
+  "dependencies": {
+    "apollo-server": "^2.25.3",
+    "apollo-server-cloud-functions": "^3.6.1",
+    "date-fns": "^2.5.0",
+    "esm": "^3.2.25",
+    "graphql": "^15.8.0",
+    "graphql-tag": "^2.12.6",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.3.4",
+    "pg": "^8.7.3",
+    "sequelize": "^6.19.0"
+  }
+}
