@@ -5,8 +5,6 @@ import relationships from "./Relationships";
 
 const Users = Models.Users(connection, Sequelize.DataTypes);
 
-const Posts = Models.Posts(connection, Sequelize.DataTypes);
-
 const Auditions = Models.Auditions(connection, Sequelize.DataTypes);
 
 const TalentedAttributes = Models.TalentedAttributes(
@@ -23,8 +21,6 @@ const Database = {
   connection,
 
   Users,
-
-  Posts,
   Auditions,
   TalentedAttributes,
   SocialAttributes,

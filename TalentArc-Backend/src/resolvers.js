@@ -14,6 +14,27 @@ const { da, tr } = require("date-fns/locale");
 
 module.exports = {
   Query: {
+    async getUserPosts(_, { input }) {
+      const user = await database.Users.findOne({
+        where: { id: input.id },
+        include: [
+          { model: database.SocialAttributes, as: "SID_SocialAttribute" },
+        ],
+      });
+      if (user.SID_SocialAttribute.dataValues.posts) {
+        const posts = await Promise.all(
+          user.SID_SocialAttribute.dataValues.posts.map(async (post) => {
+            let doc = await models.Posts.findById(post);
+            const id = doc._id.toString();
+            delete doc._id;
+            doc["postID"] = id;
+            return doc;
+          })
+        );
+        console.log(posts);
+        return posts;
+      }
+    },
     async newDirectMessage(_, { input }) {
       const dm = new models.directMessages({
         usersID: [input.senderUID, input.recieverUID],
@@ -277,6 +298,44 @@ module.exports = {
       });
       if (updated) return { bool: true };
       else return { bool: false };
+    },
+    async newPost(_, { input }) {
+      const user = await database.Users.findOne({
+        where: { id: input.uid },
+        include: [
+          { model: database.SocialAttributes, as: "SID_SocialAttribute" },
+        ],
+      });
+
+      let post = new models.Posts(input);
+      post.save(function (err) {
+        if (err) return console.log(err);
+        // saved!
+      });
+      console.log(post._id.toString());
+      if (user.dataValues.SID_SocialAttribute.dataValues.posts) {
+        user.dataValues.SID_SocialAttribute.dataValues.posts.push(
+          post._id.toString()
+        );
+      } else
+        user.dataValues.SID_SocialAttribute.dataValues.posts = [
+          post._id.toString(),
+        ];
+
+      database.SocialAttributes.update(
+        user.dataValues.SID_SocialAttribute.dataValues,
+        {
+          where: {
+            id: user.dataValues.SID_SocialAttribute.dataValues.id,
+          },
+        }
+      );
+
+      const id = post._id.toString();
+      delete post._id;
+      post["postID"] = id;
+      console.log(post);
+      return post;
     },
     async updateTalents(_, { input }) {
       const uid = input.uid;

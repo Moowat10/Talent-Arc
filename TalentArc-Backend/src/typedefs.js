@@ -23,17 +23,40 @@ module.exports = gql`
     lat: String!
     lng: String!
   }
+  type Comment {
+    uid: String!
+    text: String
+  }
+  input commentInput {
+    uid: String
+    text: String
+  }
   type Post {
     postID: String!
-    numberOfLikes: Int
-    views: Int
-    comments: [String]
+    uid: Int!
+    numberOfLikes: [Int]
+    views: [Int]
+    comments: [Comment]
+    mediaURL: String
+    text: String
+    createdAt: String
+  }
+  input newPostInput {
+    uid: Int!
+    numberOfLikes: [Int]
+    views: [Int]
+    comments: [commentInput]
+    mediaURL: String
+    text: String
   }
   input postInput {
     postID: String!
-    numberOfLikes: Int
-    views: Int
-    comments: [String]
+    uid: Int!
+    numberOfLikes: [Int]
+    views: [Int]
+    comments: [commentInput]
+    mediaURL: String
+    text: String
   }
   type User {
     id: ID!
@@ -340,6 +363,7 @@ module.exports = gql`
   }
   type Query {
     getUser(input: userUIDInput!): User!
+    getUserPosts(input: uid!): [Post]!
     getUserDirectMessages(input: uid!): [DMResponse]!
     newDirectMessage(input: directMessageInput!): DMResponse!
     sendDirectMessage(input: directMessageInput!): DMResponse!
@@ -352,6 +376,7 @@ module.exports = gql`
     newTalented(input: newTalentedInput!): Talented!
     newAgency(input: newAgencyInput!): Agency!
     newAudition(input: newAuditionManagerOverlay!): AuditionManagerOverlay!
+    newPost(input: newPostInput!): Post!
     updateUser(input: updateUserInput!): Status!
     updateTalents(input: updateTalentedInput!): Status!
     updateSocials(input: updateSocialFeaturesInput!): Status!
