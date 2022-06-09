@@ -1,6 +1,5 @@
-const gql = require("graphql-tag");
-
-module.exports = gql`
+import gql from "graphql-tag";
+export default gql`
   enum USER_TYPE {
     NORMAL
     AGENCY
@@ -42,7 +41,6 @@ module.exports = gql`
     createdAt: String
   }
   input newPostInput {
-    uid: Int!
     numberOfLikes: [Int]
     views: [Int]
     comments: [commentInput]
@@ -51,7 +49,6 @@ module.exports = gql`
   }
   input postInput {
     postID: String!
-    uid: Int!
     numberOfLikes: [Int]
     views: [Int]
     comments: [commentInput]
@@ -59,11 +56,12 @@ module.exports = gql`
     text: String
   }
   type User {
-    id: ID!
-    uid: String!
+    uid: ID!
+    id: String!
     userType: USER_TYPE!
     fullName: String!
     email: String!
+    password: String
     address: Address
     phone: String
     bio: String
@@ -104,6 +102,7 @@ module.exports = gql`
     userType: USER_TYPE
     fullName: String!
     email: String!
+    password: String!
     address: addressInput
     phone: String
     bio: String
@@ -119,11 +118,11 @@ module.exports = gql`
     tiktokURL: String
     isPublicChat: Boolean
   }
-  input userUIDInput {
-    uid: String!
+  input userLogInInput {
+    email: String!
+    password: String!
   }
   input updateUserInput {
-    uid: String!
     userType: USER_TYPE
     fullName: String
     email: String
@@ -234,7 +233,6 @@ module.exports = gql`
     humanFeatures: humanFeatureInput!
   }
   input updateTalentedInput {
-    uid: String!
     socialFeatures: updateSocialFeaturesInput
     humanFeatures: humanFeatureInput
     previousWork: [String]
@@ -253,8 +251,6 @@ module.exports = gql`
     listOfWinningActors: [String]
   }
   input newAuditionManagerOverlay {
-    UID: String!
-    id: String
     auditionName: String!
     roleDetails: String
     creationDate: String!
@@ -339,12 +335,10 @@ module.exports = gql`
     mssg: String
   }
   input followRequestInput {
-    senderUID: Int!
     receiverUID: Int!
   }
   input applyForAuditionInput {
     AID: Int!
-    UID: Int!
   }
   input directMessageInput {
     dmID: String
@@ -361,22 +355,27 @@ module.exports = gql`
     usersID: [Int]
     messages: [Message]
   }
+  type AuthenticatedUser {
+    user: User!
+    token: String!
+  }
   type Query {
-    getUser(input: userUIDInput!): User!
-    getUserPosts(input: uid!): [Post]!
+    getUserAndToken(input: userLogInInput!): AuthenticatedUser!
+    getUserByID(input: uid!): User!
+    getUserPosts: [Post]
     getUserDirectMessages(input: uid!): [DMResponse]!
-    newDirectMessage(input: directMessageInput!): DMResponse!
     sendDirectMessage(input: directMessageInput!): DMResponse!
     filterHumanFeatures(input: humanFeatureInput!): [HumanFeature]
     followRequest(input: followRequestInput!): Status
     applyForAudition(input: applyForAuditionInput!): Status
   }
   type Mutation {
-    newUser(input: newUserInput!): User!
-    newTalented(input: newTalentedInput!): Talented!
-    newAgency(input: newAgencyInput!): Agency!
+    newUser(input: newUserInput!): AuthenticatedUser!
+    newTalented(input: newTalentedInput!): AuthenticatedUser!
+    newAgency(input: newAgencyInput!): AuthenticatedUser!
     newAudition(input: newAuditionManagerOverlay!): AuditionManagerOverlay!
     newPost(input: newPostInput!): Post!
+    newDirectMessage(input: directMessageInput!): DMResponse!
     updateUser(input: updateUserInput!): Status!
     updateTalents(input: updateTalentedInput!): Status!
     updateSocials(input: updateSocialFeaturesInput!): Status!

@@ -13,6 +13,10 @@ export default (connection, DataTypes) =>
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.STRING(256),
+        allowNull: false,
+      },
       fullName: {
         type: DataTypes.STRING(100),
         allowNull: true,

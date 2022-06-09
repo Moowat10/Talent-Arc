@@ -6,7 +6,7 @@ const secret = "pall3tk";
  * using user.id and user.role
  * @param {Object} user the user to create a jwt for
  */
-const createToken = ({ id, role }) => jwt.sign({ id, role }, secret);
+const createToken = ({ id, sid, role }) => jwt.sign({ id, sid, role }, secret);
 
 /**
  * will attemp to verify a jwt and find a user in the
@@ -17,8 +17,7 @@ const createToken = ({ id, role }) => jwt.sign({ id, role }, secret);
 const getUserFromToken = (token) => {
   try {
     let user = jwt.verify(token, secret);
-    // const temp = User.findById(user.id)
-    // console.log(temp.role)
+    console.log(user);
     return user;
   } catch (e) {
     return null;
@@ -44,8 +43,16 @@ const authenticated = (next) => (root, args, context, info) => {
  * @param {Function} next next resolver function to run
  */
 const authorized = (role, next) => (root, args, context, info) => {
+  console.log(context);
   if (context.user.role !== role) {
     throw Error(`Not Authorized Must be a ${role}`);
+  }
+  return next(root, args, context, info);
+};
+const notAuthorized = (role, next) => (root, args, context, info) => {
+  console.log(context);
+  if (context.user.role == role) {
+    throw Error(` ${role} Not Authorized`);
   }
   return next(root, args, context, info);
 };
@@ -54,5 +61,6 @@ module.exports = {
   getUserFromToken,
   authenticated,
   authorized,
+  notAuthorized,
   createToken,
 };
