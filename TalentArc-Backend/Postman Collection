@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "2e20d531-6330-4750-9e08-c55fbb1daf1e",
+		"name": "Talent-Arc GraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "16600898"
+	},
+	"item": [
+		{
+			"name": "Query",
+			"item": [
+				{
+					"name": "Direct Messages",
+					"item": [
+						{
+							"name": "Send Direct Message",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  sendDirectMessage(input: {dmID: \"6297b8acdd0a9ac78e8ab99b\", senderUID: 3 , recieverUID: 1 , mssg: \"heyyyyy\"})\r\n  {\r\n    usersID\r\n    messages{\r\n      text\r\n      uid\r\n    }\r\n    dmID\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Direct Messages",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  getUserDirectMessages(input: { id: 3 })\r\n  {\r\n    dmID\r\n    messages\r\n    {\r\n      text\r\n    }\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Posts",
+					"item": [
+						{
+							"name": "Get User Posts",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  getUserPosts(input: {id:1})\r\n  {\r\n    postID\r\n    text\r\n    createdAt\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Search Filters",
+					"item": [
+						{
+							"name": "Human Features Filter",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  filterHumanFeatures(input: { id: \"1\" })\r\n  {\r\n    id\r\n    UID\r\n    ethnicity\r\n  }",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Following Logic",
+					"item": [
+						{
+							"name": "Follow Request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  followRequest(input: {senderUID: 4, receiverUID: 1})\r\n  {\r\n    bool\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auditions Logic",
+					"item": [
+						{
+							"name": "Apply For Audition",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query{\r\n  applyForAudition(input: {AID: 1, UID: 7})\r\n  {\r\n    bool\r\n    mssg\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mutation",
+			"item": [
+				{
+					"name": "Create",
+					"item": [
+						{
+							"name": "New Talented User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\n  newTalented(input: {user: {email: \"ssa@fsfgbgfccs.com\", fullName: \"omarkooo\", address: {cityOfResidency: \"cairo\", countryOfResidency:\"egypt\"}, phone: \"34343218\", bio: \"\", nationality: \"egyptian\", geoLocation: {lat: \"12313123\", lng: \"458693985349\"}, dateOfBirth:\"2020/5/12\", profileImgURL: \"\", coverImgURL:\"\",facebookURL:\"\", googleURL: \"\", youtubeURL: \"\", instagramURL: \"\", tiktokURL: \"\", isPublicChat: false} , humanFeatures: { ethnicity: \"black\" } })\r\n  {\r\n    user{\r\n      email\r\n    }\r\n    socialFeatures {\r\n      id }\r\n    humanFeatures {\r\n      id\r\n    }\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "New Normal User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\n  newUser(input: {email: \"ssa@fsfgbgfccs.com\", fullName: \"omarkooo\", address: {cityOfResidency: \"cairo\", countryOfResidency:\"egypt\"}, phone: \"34343218\", bio: \"\", nationality: \"egyptian\", geoLocation: {lat: \"12313123\", lng: \"458693985349\"}, dateOfBirth:\"2020/5/12\", profileImgURL: \"\", coverImgURL:\"\",facebookURL:\"\", googleURL: \"\", youtubeURL: \"\", instagramURL: \"\", tiktokURL: \"\", isPublicChat: false })\r\n  {\r\n\r\n      email\r\n   \r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "New Agency User",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation {\r\n  newAgency(input: {user: { fullName: \"Alrajhi Company\", email: \"rajregerghhhiraj.com\"}})\r\n  {\r\n    id\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "New Direct Message",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\n  newDirectMessage(input: {senderUID: 3 , recieverUID: 1 , mssg: \"hiiii\"})\r\n  {\r\n    dmID\r\n    usersID\r\n    messages{\r\n      text\r\n      uid\r\n    }\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "New Audition",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\n  newAudition(input: { UID: \"1\", auditionName: \"RAJ\", creationDate: \"2022/12/1\", endDate: \"2022/12/20\" })\r\n\t{\r\n    id\r\n    UID\r\n    auditionName\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						},
+						{
+							"name": "New Post",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\nnewPost(input: {uid: 1, text: \"Yalla beeenaaaa\"})\r\n  {\r\n    postID\r\n    uid\r\n    createdAt\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update",
+					"item": [
+						{
+							"name": "Update User(Any Type)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation{\r\n  updateUser(input: {uid: \"1\", fullName: \"farag\"})\r\n  {\r\n    bool\r\n  }\r\n}",
+										"variables": ""
+									}
+								},
+								"url": "http://localhost:8000/"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
