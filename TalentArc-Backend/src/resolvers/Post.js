@@ -1,5 +1,6 @@
 import { authenticated, notAuthorized } from "../auth";
 import { UserInputError } from "apollo-server";
+
 export default {
   newPost: authenticated(
     notAuthorized("USER", async (_, { input }, { models, database, user }) => {
@@ -64,4 +65,43 @@ export default {
       }
     })
   ),
+  updatePost: async (_, { input }, { models, database, user }) => {
+    const postID = input.postID;
+    delete input.postID;
+    const post = await models.Posts.findByIdAndUpdate(postID, input, {
+      returnOriginal: false,
+    });
+    post["postID"] = post.id;
+    delete post.id;
+    return post;
+  },
+  updatePostComments: async (_, { input }, { models, database, user }) => {
+    const postID = input.postID;
+    input.comment.uid = user.id;
+    const post = await models.Posts.findByIdAndUpdate(
+      postID,
+      {
+        $push: { comments: input.comment },
+      },
+      { upsert: true, returnOriginal: false }
+    );
+    console.log({ post, input });
+    post["postID"] = post.id;
+    delete post.id;
+    return post;
+  },
+  incrementPostLikes: async (_, { input }, { models, database, user }) => {
+    const postID = input.id;
+    delete input.id;
+    const post = await models.Posts.findByIdAndUpdate(
+      postID,
+      {
+        $addToSet: { numberOfLikes: user.id },
+      },
+      { upsert: true, returnOriginal: false }
+    );
+    post["postID"] = post.id;
+    delete post.id;
+    return post;
+  },
 };

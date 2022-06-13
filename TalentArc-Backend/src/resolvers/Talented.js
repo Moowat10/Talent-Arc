@@ -49,6 +49,7 @@ export default {
     const token = createToken({
       id: user.dataValues.id,
       sid: user.dataValues.SID,
+      tid: talentedAttributes.dataValues.id,
       role: user.dataValues.userType,
     });
     console.log(user.dataValues);
@@ -74,6 +75,13 @@ export default {
       }
       if (updated) return { bool: true };
       else return { bool: false };
+    })
+  ),
+  getTalents: authenticated(
+    authorized("TALENTED", async (_, args, { database, user }) => {
+      const tid = user.tid;
+      const talents = await database.TalentedAttributes.findByPk(tid);
+      return talents.dataValues;
     })
   ),
 };

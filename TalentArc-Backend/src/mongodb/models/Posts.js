@@ -7,7 +7,7 @@ const Post = Schema(
       type: Number,
       required: true,
     },
-    numberOfLike: Array,
+    numberOfLikes: [Number],
     views: Array,
     comments: Array,
     mediaURL: String,
